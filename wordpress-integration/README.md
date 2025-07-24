@@ -1,16 +1,18 @@
-# Temoakte WordPress Integration with Blocksy Child Theme
+# Temoakte WordPress Integration with Blocksy Child Theme + Tailwind CSS & Flowbite Pro
 
 ## Overview
 
-This is a complete WordPress integration system that creates a custom child theme based on Blocksy with the Temoakte design system. It includes custom post types, shortcodes, widgets, and a full-featured theme customization system.
+This is a complete WordPress integration system that creates a custom child theme based on Blocksy with the Temoakte design system, enhanced with **Tailwind CSS** and **Flowbite Pro** components. It includes custom post types, shortcodes, widgets, modern UI components, and a full-featured theme customization system.
 
 ## Features
 
-### 🎨 **Custom Design System**
-- Modern, responsive design with CSS Grid and Flexbox
-- Custom color scheme with CSS variables
-- Smooth animations and hover effects
-- Mobile-first responsive design
+### 🎨 **Modern Design System**
+- **Tailwind CSS** utility-first framework for rapid styling
+- **Flowbite Pro** premium UI components and interactions
+- Custom color scheme with CSS variables and Tailwind config
+- Smooth animations and hover effects with transition classes
+- Mobile-first responsive design with Tailwind breakpoints
+- Dark mode support (optional)
 
 ### 📝 **Custom Post Types**
 - **Portfolio**: Showcase your work with project details
@@ -35,13 +37,18 @@ This is a complete WordPress integration system that creates a custom child them
 - Social media links
 - Footer customization
 
-### 📱 **JavaScript Features**
-- AJAX contact forms
-- Smooth scrolling
-- Lazy loading images
-- Mobile menu
-- Portfolio filtering
-- Testimonials slider
+### 📱 **Enhanced JavaScript Features**
+- **Flowbite Pro** interactive components (modals, dropdowns, carousel, tabs)
+- AJAX contact forms with Tailwind styling
+- Smooth scrolling with easing animations
+- Lazy loading images with Intersection Observer
+- Mobile drawer menu (Flowbite Pro)
+- Portfolio filtering with smooth transitions
+- Testimonials slider/carousel
+- Toast notifications system
+- Live search functionality
+- Counter animations
+- Parallax scroll effects
 
 ## Installation
 
@@ -62,7 +69,16 @@ This is a complete WordPress integration system that creates a custom child them
    /wp-content/themes/blocksy-child/
    ```
 2. Go to **Appearance > Themes**
-3. Activate "Blocksy Child - Temoakte Custom"
+3. Activate "Blocksy Child - Temoakte Custom with Tailwind & Flowbite Pro"
+
+### Step 3: Tailwind CSS & Flowbite Pro Setup
+The theme automatically loads:
+- **Tailwind CSS** from CDN (latest version)
+- **Flowbite Pro** CSS and JavaScript from CDN
+- Custom Tailwind configuration for Temoakte colors
+- All Flowbite Pro components are ready to use
+
+**Note**: For production, consider using a local build process for better performance.
 
 ## Usage
 

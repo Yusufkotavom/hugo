@@ -1,6 +1,6 @@
 <?php
 /**
- * Blocksy Child Theme - Temoakte Custom System Integration
+ * Blocksy Child Theme - Temoakte Custom System Integration with Tailwind CSS & Flowbite Pro
  * 
  * @package Blocksy_Child_Temoakte
  * @version 1.0.0
@@ -12,23 +12,60 @@ if (!defined('ABSPATH')) {
 }
 
 /**
- * Enqueue parent and child theme styles
+ * Enqueue parent and child theme styles with Tailwind CSS and Flowbite Pro
  */
 function temoakte_enqueue_styles() {
-    // Enqueue parent theme style
-    wp_enqueue_style('blocksy-parent-style', get_template_directory_uri() . '/style.css');
+    // Enqueue Tailwind CSS
+    wp_enqueue_style('tailwindcss', 'https://cdn.tailwindcss.com', array(), '3.4.0');
     
-    // Enqueue child theme style
+    // Enqueue Flowbite Pro CSS
+    wp_enqueue_style('flowbite-pro-css', 'https://flowbite.s3.amazonaws.com/pro/dist/css/flowbite.min.css', array('tailwindcss'), '2.2.0');
+    
+    // Enqueue parent theme style
+    wp_enqueue_style('blocksy-parent-style', get_template_directory_uri() . '/style.css', array('flowbite-pro-css'));
+    
+    // Enqueue child theme style (Temoakte custom styles on top of Tailwind)
     wp_enqueue_style('blocksy-child-style', 
         get_stylesheet_directory_uri() . '/style.css',
-        array('blocksy-parent-style'),
+        array('blocksy-parent-style', 'tailwindcss', 'flowbite-pro-css'),
         wp_get_theme()->get('Version')
+    );
+    
+    // Enqueue Tailwind Config for customization
+    wp_add_inline_script('tailwindcss', '
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        temoakte: {
+                            primary: "#3b82f6",
+                            secondary: "#1e40af",
+                            accent: "#f59e0b",
+                            text: "#1f2937",
+                            bg: "#ffffff",
+                            border: "#e5e7eb"
+                        }
+                    },
+                    fontFamily: {
+                        temoakte: ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    ');
+    
+    // Enqueue Flowbite Pro JavaScript
+    wp_enqueue_script('flowbite-pro-js',
+        'https://flowbite.s3.amazonaws.com/pro/dist/js/flowbite.min.js',
+        array('jquery'),
+        '2.2.0',
+        true
     );
     
     // Enqueue Temoakte custom scripts
     wp_enqueue_script('temoakte-custom-js',
         get_stylesheet_directory_uri() . '/js/temoakte-custom.js',
-        array('jquery'),
+        array('jquery', 'flowbite-pro-js'),
         wp_get_theme()->get('Version'),
         true
     );
