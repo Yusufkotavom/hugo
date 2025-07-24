@@ -15,8 +15,8 @@ if (!defined('ABSPATH')) {
  * Enqueue parent and child theme styles with Tailwind CSS and Flowbite Pro
  */
 function temoakte_enqueue_styles() {
-    // Enqueue Tailwind CSS
-    wp_enqueue_style('tailwindcss', 'https://cdn.tailwindcss.com', array(), '3.4.0');
+    // Enqueue Tailwind CSS v4
+    wp_enqueue_style('tailwindcss', 'https://cdn.tailwindcss.com/4.0.0-alpha.9/tailwindcss.css', array(), '4.0.0-alpha.9');
     
     // Enqueue Flowbite Pro CSS
     wp_enqueue_style('flowbite-pro-css', 'https://flowbite.s3.amazonaws.com/pro/dist/css/flowbite.min.css', array('tailwindcss'), '2.2.0');
@@ -31,26 +31,47 @@ function temoakte_enqueue_styles() {
         wp_get_theme()->get('Version')
     );
     
-    // Enqueue Tailwind Config for customization
-    wp_add_inline_script('tailwindcss', '
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        temoakte: {
-                            primary: "#3b82f6",
-                            secondary: "#1e40af",
-                            accent: "#f59e0b",
-                            text: "#1f2937",
-                            bg: "#ffffff",
-                            border: "#e5e7eb"
-                        }
-                    },
-                    fontFamily: {
-                        temoakte: ["Inter", "sans-serif"]
-                    }
-                }
-            }
+    // Enqueue Tailwind CSS v4 Config
+    wp_add_inline_style('tailwindcss', '
+        @theme {
+            /* Temoakte Custom Colors for Tailwind v4 */
+            --color-temoakte-primary: #3b82f6;
+            --color-temoakte-secondary: #1e40af;
+            --color-temoakte-accent: #f59e0b;
+            --color-temoakte-text: #1f2937;
+            --color-temoakte-bg: #ffffff;
+            --color-temoakte-border: #e5e7eb;
+            
+            /* Extended Color Palette */
+            --color-temoakte-primary-50: #eff6ff;
+            --color-temoakte-primary-100: #dbeafe;
+            --color-temoakte-primary-200: #bfdbfe;
+            --color-temoakte-primary-300: #93c5fd;
+            --color-temoakte-primary-400: #60a5fa;
+            --color-temoakte-primary-500: #3b82f6;
+            --color-temoakte-primary-600: #2563eb;
+            --color-temoakte-primary-700: #1d4ed8;
+            --color-temoakte-primary-800: #1e40af;
+            --color-temoakte-primary-900: #1e3a8a;
+            --color-temoakte-primary-950: #172554;
+            
+            /* Custom Font Family */
+            --font-family-temoakte: "Inter", ui-sans-serif, system-ui, sans-serif;
+            
+            /* Custom Spacing */
+            --spacing-temoakte-xs: 0.5rem;
+            --spacing-temoakte-sm: 1rem;
+            --spacing-temoakte-md: 1.5rem;
+            --spacing-temoakte-lg: 2rem;
+            --spacing-temoakte-xl: 3rem;
+            
+            /* Custom Border Radius */
+            --radius-temoakte-card: 0.75rem;
+            --radius-temoakte-button: 0.5rem;
+            
+            /* Custom Shadows */
+            --shadow-temoakte-card: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-temoakte-card-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
         }
     ');
     

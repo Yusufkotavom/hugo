@@ -1,6 +1,6 @@
 /*
-Theme Name: Blocksy Child - Temoakte Custom with Tailwind & Flowbite Pro
-Description: Child theme of Blocksy with Temoakte system integration using Tailwind CSS and Flowbite Pro
+Theme Name: Blocksy Child - Temoakte Custom with Tailwind CSS v4 & Flowbite Pro
+Description: Child theme of Blocksy with Temoakte system integration using Tailwind CSS v4 and Flowbite Pro
 Author: Temoakte
 Template: blocksy
 Version: 1.0.0
@@ -9,10 +9,8 @@ Version: 1.0.0
 /* Import parent theme styles */
 @import url("../blocksy/style.css");
 
-/* Tailwind CSS Base, Components, and Utilities */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Tailwind CSS v4 - Modern Import Syntax */
+@import "tailwindcss";
 
 /* Custom Temoakte System Styles with Tailwind Integration */
 :root {
@@ -24,46 +22,119 @@ Version: 1.0.0
   --temoakte-border: #e5e7eb;
 }
 
-/* Temoakte Custom Components using Tailwind Classes */
-@layer components {
-  .temoakte-btn {
-    @apply inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+/* Temoakte Custom Components using Tailwind CSS v4 */
+.temoakte-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: var(--radius-temoakte-button);
+  transition: all 0.2s ease;
+  outline: none;
+  
+  &:focus {
+    ring: 2px;
+    ring-offset: 2px;
+  }
+}
+
+.temoakte-btn-primary {
+  background-color: var(--color-temoakte-primary);
+  color: white;
+  
+  &:hover {
+    background-color: var(--color-temoakte-primary-700);
   }
   
-  .temoakte-btn-primary {
-    @apply bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500;
+  &:focus {
+    ring-color: var(--color-temoakte-primary-500);
+  }
+}
+
+.temoakte-btn-secondary {
+  background-color: transparent;
+  color: var(--color-temoakte-primary);
+  border: 2px solid var(--color-temoakte-primary);
+  
+  &:hover {
+    background-color: var(--color-temoakte-primary);
+    color: white;
   }
   
-  .temoakte-btn-secondary {
-    @apply bg-transparent text-blue-600 border-2 border-blue-600 hover:bg-blue-600 hover:text-white focus:ring-blue-500;
+  &:focus {
+    ring-color: var(--color-temoakte-primary-500);
+  }
+}
+
+.temoakte-btn-large {
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+}
+
+.temoakte-card {
+  background-color: white;
+  border-radius: var(--radius-temoakte-card);
+  box-shadow: var(--shadow-temoakte-card);
+  padding: 1.5rem;
+  border: 1px solid var(--color-temoakte-border);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: var(--shadow-temoakte-card-hover);
+    transform: translateY(-0.25rem);
+  }
+}
+
+.temoakte-content {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+  
+  @media (min-width: 640px) {
+    padding: 0 1.5rem;
   }
   
-  .temoakte-btn-large {
-    @apply px-8 py-4 text-lg;
+  @media (min-width: 1024px) {
+    padding: 0 2rem;
+  }
+}
+
+.temoakte-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.temoakte-grid-2 {
+  grid-template-columns: 1fr;
+  
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.temoakte-grid-3 {
+  grid-template-columns: 1fr;
+  
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
   }
   
-  .temoakte-card {
-    @apply bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 border border-gray-100;
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.temoakte-grid-4 {
+  grid-template-columns: 1fr;
+  
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
   }
   
-  .temoakte-content {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
-  }
-  
-  .temoakte-grid {
-    @apply grid gap-6;
-  }
-  
-  .temoakte-grid-2 {
-    @apply grid-cols-1 md:grid-cols-2;
-  }
-  
-  .temoakte-grid-3 {
-    @apply grid-cols-1 md:grid-cols-2 lg:grid-cols-3;
-  }
-  
-  .temoakte-grid-4 {
-    @apply grid-cols-1 sm:grid-cols-2 lg:grid-cols-4;
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 

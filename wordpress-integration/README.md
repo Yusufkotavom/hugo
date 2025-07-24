@@ -71,14 +71,24 @@ This is a complete WordPress integration system that creates a custom child them
 2. Go to **Appearance > Themes**
 3. Activate "Blocksy Child - Temoakte Custom with Tailwind & Flowbite Pro"
 
-### Step 3: Tailwind CSS & Flowbite Pro Setup
+### Step 3: Tailwind CSS v4 & Flowbite Pro Setup
 The theme automatically loads:
-- **Tailwind CSS** from CDN (latest version)
-- **Flowbite Pro** CSS and JavaScript from CDN
-- Custom Tailwind configuration for Temoakte colors
+- **Tailwind CSS v4.0.0-alpha.9** from CDN (latest v4 alpha)
+- **Flowbite Pro 2.2.0** CSS and JavaScript from CDN
+- Custom Temoakte design system using `@theme` directive
+- Complete color palette, typography, spacing, and component system
+- Dark mode support with automatic and class-based switching
 - All Flowbite Pro components are ready to use
 
-**Note**: For production, consider using a local build process for better performance.
+**Key Features of Tailwind CSS v4 Integration:**
+- ✅ Modern `@import "tailwindcss"` syntax
+- ✅ Native CSS `@theme` directive for design tokens
+- ✅ Enhanced performance with new engine
+- ✅ Better IntelliSense and developer experience
+- ✅ Improved CSS nesting support
+- ✅ Built-in dark mode theming
+
+**Note**: For production, consider using a local build process for better performance and smaller bundle sizes.
 
 ## Usage
 
@@ -183,6 +193,83 @@ Register these menu locations:
 3. **Footer Secondary** - Secondary footer links (Privacy, Terms, etc.)
 
 Go to **Appearance > Menus** to create and assign menus.
+
+## Tailwind CSS v4 Features
+
+### 🎨 **@theme Directive**
+Tailwind CSS v4 introduces the powerful `@theme` directive for defining design tokens:
+
+```css
+@theme {
+  /* Custom Temoakte Colors */
+  --color-temoakte-primary: #3b82f6;
+  --color-temoakte-secondary: #1e40af;
+  --color-temoakte-accent: #f59e0b;
+  
+  /* Custom Spacing */
+  --spacing-temoakte-xs: 0.5rem;
+  --spacing-temoakte-sm: 1rem;
+  --spacing-temoakte-lg: 2rem;
+  
+  /* Custom Shadows */
+  --shadow-temoakte-card: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+```
+
+### 🌙 **Dark Mode Support**
+Built-in dark mode with multiple activation methods:
+
+```css
+/* Automatic based on system preference */
+@media (prefers-color-scheme: dark) {
+  @theme {
+    --color-temoakte-bg: var(--color-temoakte-neutral-900);
+    --color-temoakte-text: var(--color-temoakte-neutral-100);
+  }
+}
+
+/* Manual class-based switching */
+.dark {
+  --color-temoakte-bg: var(--color-temoakte-neutral-900);
+  --color-temoakte-text: var(--color-temoakte-neutral-100);
+}
+```
+
+### 🎯 **Custom Utility Classes**
+Use Temoakte-specific utilities:
+
+```html
+<!-- Colors -->
+<div class="bg-temoakte-primary text-temoakte-neutral-100">
+<div class="border-temoakte-border text-temoakte-muted">
+
+<!-- Spacing -->
+<div class="p-temoakte-md m-temoakte-lg">
+<div class="gap-temoakte-xs">
+
+<!-- Components -->
+<button class="temoakte-btn temoakte-btn-primary">
+<div class="temoakte-card">
+<div class="temoakte-grid temoakte-grid-3">
+```
+
+### 🔧 **CSS Nesting**
+Modern CSS nesting support:
+
+```css
+.temoakte-btn {
+  padding: 0.75rem 1.5rem;
+  
+  &:hover {
+    background-color: var(--color-temoakte-primary-700);
+  }
+  
+  &:focus {
+    ring: 2px;
+    ring-color: var(--color-temoakte-primary-500);
+  }
+}
+```
 
 ## Customization
 
