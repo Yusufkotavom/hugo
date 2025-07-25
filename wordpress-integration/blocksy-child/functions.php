@@ -1,785 +1,367 @@
 <?php
 /**
- * Blocksy Child Theme - Temoakte Custom System Integration with Tailwind CSS & Flowbite Pro
- * 
- * @package Blocksy_Child_Temoakte
- * @version 1.0.0
+ * Temoakte Ready-Made Theme Functions
+ * Uses local app.css and app.js assets with placeholder content
  */
-
-// Prevent direct access
-if (!defined('ABSPATH')) {
-    exit;
-}
 
 /**
- * Enqueue parent and child theme styles with Tailwind CSS and Flowbite Pro
+ * Enqueue local assets (app.css and app.js)
  */
-function temoakte_enqueue_styles() {
-    // Enqueue Tailwind CSS v4
-    wp_enqueue_style('tailwindcss', 'https://cdn.tailwindcss.com/4.0.0-alpha.9/tailwindcss.css', array(), '4.0.0-alpha.9');
-    
-    // Enqueue Flowbite Pro CSS
-    wp_enqueue_style('flowbite-pro-css', 'https://flowbite.s3.amazonaws.com/pro/dist/css/flowbite.min.css', array('tailwindcss'), '2.2.0');
+function temoakte_enqueue_ready_assets() {
+    // Enqueue your app.css (contains Tailwind CSS v4 + Flowbite + custom styles)
+    wp_enqueue_style('temoakte-app-css', 
+        get_stylesheet_directory_uri() . '/assets/css/app.css', 
+        array(), 
+        filemtime(get_stylesheet_directory() . '/assets/css/app.css')
+    );
     
     // Enqueue parent theme style
-    wp_enqueue_style('blocksy-parent-style', get_template_directory_uri() . '/style.css', array('flowbite-pro-css'));
+    wp_enqueue_style('blocksy-parent-style', 
+        get_template_directory_uri() . '/style.css', 
+        array('temoakte-app-css')
+    );
     
-    // Enqueue child theme style (Temoakte custom styles on top of Tailwind)
+    // Enqueue child theme style (any additional overrides)
     wp_enqueue_style('blocksy-child-style', 
         get_stylesheet_directory_uri() . '/style.css',
-        array('blocksy-parent-style', 'tailwindcss', 'flowbite-pro-css'),
+        array('blocksy-parent-style'),
         wp_get_theme()->get('Version')
     );
     
-    // Enqueue Tailwind CSS v4 Config
-    wp_add_inline_style('tailwindcss', '
-        @theme {
-            /* Temoakte Custom Colors for Tailwind v4 */
-            --color-temoakte-primary: #3b82f6;
-            --color-temoakte-secondary: #1e40af;
-            --color-temoakte-accent: #f59e0b;
-            --color-temoakte-text: #1f2937;
-            --color-temoakte-bg: #ffffff;
-            --color-temoakte-border: #e5e7eb;
-            
-            /* Extended Color Palette */
-            --color-temoakte-primary-50: #eff6ff;
-            --color-temoakte-primary-100: #dbeafe;
-            --color-temoakte-primary-200: #bfdbfe;
-            --color-temoakte-primary-300: #93c5fd;
-            --color-temoakte-primary-400: #60a5fa;
-            --color-temoakte-primary-500: #3b82f6;
-            --color-temoakte-primary-600: #2563eb;
-            --color-temoakte-primary-700: #1d4ed8;
-            --color-temoakte-primary-800: #1e40af;
-            --color-temoakte-primary-900: #1e3a8a;
-            --color-temoakte-primary-950: #172554;
-            
-            /* Custom Font Family */
-            --font-family-temoakte: "Inter", ui-sans-serif, system-ui, sans-serif;
-            
-            /* Custom Spacing */
-            --spacing-temoakte-xs: 0.5rem;
-            --spacing-temoakte-sm: 1rem;
-            --spacing-temoakte-md: 1.5rem;
-            --spacing-temoakte-lg: 2rem;
-            --spacing-temoakte-xl: 3rem;
-            
-            /* Custom Border Radius */
-            --radius-temoakte-card: 0.75rem;
-            --radius-temoakte-button: 0.5rem;
-            
-            /* Custom Shadows */
-            --shadow-temoakte-card: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --shadow-temoakte-card-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-        }
-    ');
-    
-    // Enqueue Flowbite Pro JavaScript
-    wp_enqueue_script('flowbite-pro-js',
-        'https://flowbite.s3.amazonaws.com/pro/dist/js/flowbite.min.js',
-        array('jquery'),
-        '2.2.0',
+    // Enqueue your app.js (contains Flowbite + custom components)
+    wp_enqueue_script('temoakte-app-js',
+        get_stylesheet_directory_uri() . '/assets/js/app.js',
+        array(),
+        filemtime(get_stylesheet_directory() . '/assets/js/app.js'),
         true
     );
     
-    // Enqueue Temoakte custom scripts
-    wp_enqueue_script('temoakte-custom-js',
-        get_stylesheet_directory_uri() . '/js/temoakte-custom.js',
-        array('jquery', 'flowbite-pro-js'),
-        wp_get_theme()->get('Version'),
-        true
-    );
-    
-    // Localize script for AJAX
-    wp_localize_script('temoakte-custom-js', 'temoakte_ajax', array(
+    // Minimal AJAX for contact forms
+    wp_localize_script('temoakte-app-js', 'temoakte_ajax', array(
         'ajax_url' => admin_url('admin-ajax.php'),
         'nonce' => wp_create_nonce('temoakte_nonce')
     ));
 }
-add_action('wp_enqueue_scripts', 'temoakte_enqueue_styles');
+add_action('wp_enqueue_scripts', 'temoakte_enqueue_ready_assets');
 
 /**
- * Register Temoakte Custom Post Types
+ * Theme setup
  */
-function temoakte_register_post_types() {
+function temoakte_ready_theme_setup() {
+    add_theme_support('post-thumbnails');
+    add_theme_support('html5', array('search-form', 'comment-form', 'gallery', 'caption'));
+    add_theme_support('title-tag');
+    add_theme_support('custom-logo');
     
-    // Portfolio Post Type
-    register_post_type('temoakte_portfolio', array(
-        'labels' => array(
-            'name' => __('Portfolio', 'temoakte'),
-            'singular_name' => __('Portfolio Item', 'temoakte'),
-            'menu_name' => __('Portfolio', 'temoakte'),
-            'add_new' => __('Add New', 'temoakte'),
-            'add_new_item' => __('Add New Portfolio Item', 'temoakte'),
-            'edit_item' => __('Edit Portfolio Item', 'temoakte'),
-            'new_item' => __('New Portfolio Item', 'temoakte'),
-            'view_item' => __('View Portfolio Item', 'temoakte'),
-            'search_items' => __('Search Portfolio', 'temoakte'),
-            'not_found' => __('No portfolio items found', 'temoakte'),
-            'not_found_in_trash' => __('No portfolio items found in trash', 'temoakte')
-        ),
-        'public' => true,
-        'has_archive' => true,
-        'menu_icon' => 'dashicons-portfolio',
-        'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'custom-fields'),
-        'rewrite' => array('slug' => 'portfolio'),
-        'show_in_rest' => true
-    ));
-    
-    // Services Post Type
-    register_post_type('temoakte_services', array(
-        'labels' => array(
-            'name' => __('Services', 'temoakte'),
-            'singular_name' => __('Service', 'temoakte'),
-            'menu_name' => __('Services', 'temoakte'),
-            'add_new' => __('Add New', 'temoakte'),
-            'add_new_item' => __('Add New Service', 'temoakte'),
-            'edit_item' => __('Edit Service', 'temoakte'),
-            'new_item' => __('New Service', 'temoakte'),
-            'view_item' => __('View Service', 'temoakte'),
-            'search_items' => __('Search Services', 'temoakte'),
-            'not_found' => __('No services found', 'temoakte'),
-            'not_found_in_trash' => __('No services found in trash', 'temoakte')
-        ),
-        'public' => true,
-        'has_archive' => true,
-        'menu_icon' => 'dashicons-admin-tools',
-        'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'custom-fields'),
-        'rewrite' => array('slug' => 'services'),
-        'show_in_rest' => true
-    ));
-    
-    // Testimonials Post Type
-    register_post_type('temoakte_testimonials', array(
-        'labels' => array(
-            'name' => __('Testimonials', 'temoakte'),
-            'singular_name' => __('Testimonial', 'temoakte'),
-            'menu_name' => __('Testimonials', 'temoakte'),
-            'add_new' => __('Add New', 'temoakte'),
-            'add_new_item' => __('Add New Testimonial', 'temoakte'),
-            'edit_item' => __('Edit Testimonial', 'temoakte'),
-            'new_item' => __('New Testimonial', 'temoakte'),
-            'view_item' => __('View Testimonial', 'temoakte'),
-            'search_items' => __('Search Testimonials', 'temoakte'),
-            'not_found' => __('No testimonials found', 'temoakte'),
-            'not_found_in_trash' => __('No testimonials found in trash', 'temoakte')
-        ),
-        'public' => true,
-        'has_archive' => true,
-        'menu_icon' => 'dashicons-format-quote',
-        'supports' => array('title', 'editor', 'thumbnail', 'custom-fields'),
-        'rewrite' => array('slug' => 'testimonials'),
-        'show_in_rest' => true
+    // Register navigation menus
+    register_nav_menus(array(
+        'primary' => 'Primary Menu',
+        'footer' => 'Footer Menu',
     ));
 }
-add_action('init', 'temoakte_register_post_types');
+add_action('after_setup_theme', 'temoakte_ready_theme_setup');
 
 /**
- * Register Temoakte Custom Taxonomies
+ * Register widget areas
  */
-function temoakte_register_taxonomies() {
-    
-    // Portfolio Categories
-    register_taxonomy('portfolio_category', 'temoakte_portfolio', array(
-        'labels' => array(
-            'name' => __('Portfolio Categories', 'temoakte'),
-            'singular_name' => __('Portfolio Category', 'temoakte'),
-            'menu_name' => __('Categories', 'temoakte'),
-        ),
-        'hierarchical' => true,
-        'public' => true,
-        'show_in_rest' => true,
-        'rewrite' => array('slug' => 'portfolio-category')
+function temoakte_ready_widgets_init() {
+    register_sidebar(array(
+        'name' => 'Footer 1',
+        'id' => 'footer-1',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget' => '</div>',
+        'before_title' => '<h3 class="widget-title text-lg font-semibold mb-4 text-white">',
+        'after_title' => '</h3>',
     ));
-    
-    // Service Categories
-    register_taxonomy('service_category', 'temoakte_services', array(
-        'labels' => array(
-            'name' => __('Service Categories', 'temoakte'),
-            'singular_name' => __('Service Category', 'temoakte'),
-            'menu_name' => __('Categories', 'temoakte'),
-        ),
-        'hierarchical' => true,
-        'public' => true,
-        'show_in_rest' => true,
-        'rewrite' => array('slug' => 'service-category')
+
+    register_sidebar(array(
+        'name' => 'Footer 2',
+        'id' => 'footer-2',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget' => '</div>',
+        'before_title' => '<h3 class="widget-title text-lg font-semibold mb-4 text-white">',
+        'after_title' => '</h3>',
+    ));
+
+    register_sidebar(array(
+        'name' => 'Footer 3',
+        'id' => 'footer-3',
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget' => '</div>',
+        'before_title' => '<h3 class="widget-title text-lg font-semibold mb-4 text-white">',
+        'after_title' => '</h3>',
     ));
 }
-add_action('init', 'temoakte_register_taxonomies');
+add_action('widgets_init', 'temoakte_ready_widgets_init');
 
 /**
- * Add Temoakte Custom Fields Support
+ * Simple shortcodes with placeholder content
  */
-function temoakte_add_meta_boxes() {
-    
-    // Portfolio Meta Box
-    add_meta_box(
-        'temoakte_portfolio_meta',
-        __('Portfolio Details', 'temoakte'),
-        'temoakte_portfolio_meta_callback',
-        'temoakte_portfolio',
-        'normal',
-        'high'
-    );
-    
-    // Services Meta Box
-    add_meta_box(
-        'temoakte_services_meta',
-        __('Service Details', 'temoakte'),
-        'temoakte_services_meta_callback',
-        'temoakte_services',
-        'normal',
-        'high'
-    );
-    
-    // Testimonials Meta Box
-    add_meta_box(
-        'temoakte_testimonials_meta',
-        __('Testimonial Details', 'temoakte'),
-        'temoakte_testimonials_meta_callback',
-        'temoakte_testimonials',
-        'normal',
-        'high'
-    );
-}
-add_action('add_meta_boxes', 'temoakte_add_meta_boxes');
-
-/**
- * Portfolio Meta Box Callback
- */
-function temoakte_portfolio_meta_callback($post) {
-    wp_nonce_field('temoakte_portfolio_meta_nonce', 'temoakte_portfolio_meta_nonce_field');
-    
-    $project_url = get_post_meta($post->ID, '_temoakte_project_url', true);
-    $client_name = get_post_meta($post->ID, '_temoakte_client_name', true);
-    $project_date = get_post_meta($post->ID, '_temoakte_project_date', true);
-    $technologies = get_post_meta($post->ID, '_temoakte_technologies', true);
-    
-    echo '<table class="form-table">';
-    echo '<tr><th scope="row"><label for="temoakte_project_url">' . __('Project URL', 'temoakte') . '</label></th>';
-    echo '<td><input type="url" id="temoakte_project_url" name="temoakte_project_url" value="' . esc_attr($project_url) . '" style="width: 100%;" /></td></tr>';
-    
-    echo '<tr><th scope="row"><label for="temoakte_client_name">' . __('Client Name', 'temoakte') . '</label></th>';
-    echo '<td><input type="text" id="temoakte_client_name" name="temoakte_client_name" value="' . esc_attr($client_name) . '" style="width: 100%;" /></td></tr>';
-    
-    echo '<tr><th scope="row"><label for="temoakte_project_date">' . __('Project Date', 'temoakte') . '</label></th>';
-    echo '<td><input type="date" id="temoakte_project_date" name="temoakte_project_date" value="' . esc_attr($project_date) . '" style="width: 100%;" /></td></tr>';
-    
-    echo '<tr><th scope="row"><label for="temoakte_technologies">' . __('Technologies Used', 'temoakte') . '</label></th>';
-    echo '<td><textarea id="temoakte_technologies" name="temoakte_technologies" rows="3" style="width: 100%;">' . esc_textarea($technologies) . '</textarea></td></tr>';
-    echo '</table>';
-}
-
-/**
- * Services Meta Box Callback
- */
-function temoakte_services_meta_callback($post) {
-    wp_nonce_field('temoakte_services_meta_nonce', 'temoakte_services_meta_nonce_field');
-    
-    $service_price = get_post_meta($post->ID, '_temoakte_service_price', true);
-    $service_duration = get_post_meta($post->ID, '_temoakte_service_duration', true);
-    $service_features = get_post_meta($post->ID, '_temoakte_service_features', true);
-    
-    echo '<table class="form-table">';
-    echo '<tr><th scope="row"><label for="temoakte_service_price">' . __('Service Price', 'temoakte') . '</label></th>';
-    echo '<td><input type="text" id="temoakte_service_price" name="temoakte_service_price" value="' . esc_attr($service_price) . '" style="width: 100%;" /></td></tr>';
-    
-    echo '<tr><th scope="row"><label for="temoakte_service_duration">' . __('Service Duration', 'temoakte') . '</label></th>';
-    echo '<td><input type="text" id="temoakte_service_duration" name="temoakte_service_duration" value="' . esc_attr($service_duration) . '" style="width: 100%;" /></td></tr>';
-    
-    echo '<tr><th scope="row"><label for="temoakte_service_features">' . __('Service Features', 'temoakte') . '</label></th>';
-    echo '<td><textarea id="temoakte_service_features" name="temoakte_service_features" rows="5" style="width: 100%;">' . esc_textarea($service_features) . '</textarea>';
-    echo '<p class="description">' . __('Enter one feature per line', 'temoakte') . '</p></td></tr>';
-    echo '</table>';
-}
-
-/**
- * Testimonials Meta Box Callback
- */
-function temoakte_testimonials_meta_callback($post) {
-    wp_nonce_field('temoakte_testimonials_meta_nonce', 'temoakte_testimonials_meta_nonce_field');
-    
-    $client_name = get_post_meta($post->ID, '_temoakte_client_name', true);
-    $client_position = get_post_meta($post->ID, '_temoakte_client_position', true);
-    $client_company = get_post_meta($post->ID, '_temoakte_client_company', true);
-    $rating = get_post_meta($post->ID, '_temoakte_rating', true);
-    
-    echo '<table class="form-table">';
-    echo '<tr><th scope="row"><label for="temoakte_client_name">' . __('Client Name', 'temoakte') . '</label></th>';
-    echo '<td><input type="text" id="temoakte_client_name" name="temoakte_client_name" value="' . esc_attr($client_name) . '" style="width: 100%;" /></td></tr>';
-    
-    echo '<tr><th scope="row"><label for="temoakte_client_position">' . __('Client Position', 'temoakte') . '</label></th>';
-    echo '<td><input type="text" id="temoakte_client_position" name="temoakte_client_position" value="' . esc_attr($client_position) . '" style="width: 100%;" /></td></tr>';
-    
-    echo '<tr><th scope="row"><label for="temoakte_client_company">' . __('Client Company', 'temoakte') . '</label></th>';
-    echo '<td><input type="text" id="temoakte_client_company" name="temoakte_client_company" value="' . esc_attr($client_company) . '" style="width: 100%;" /></td></tr>';
-    
-    echo '<tr><th scope="row"><label for="temoakte_rating">' . __('Rating (1-5)', 'temoakte') . '</label></th>';
-    echo '<td><select id="temoakte_rating" name="temoakte_rating">';
-    for ($i = 1; $i <= 5; $i++) {
-        echo '<option value="' . $i . '"' . selected($rating, $i, false) . '>' . $i . ' Star' . ($i > 1 ? 's' : '') . '</option>';
-    }
-    echo '</select></td></tr>';
-    echo '</table>';
-}
-
-/**
- * Save Meta Box Data
- */
-function temoakte_save_meta_boxes($post_id) {
-    // Portfolio Meta
-    if (isset($_POST['temoakte_portfolio_meta_nonce_field']) && wp_verify_nonce($_POST['temoakte_portfolio_meta_nonce_field'], 'temoakte_portfolio_meta_nonce')) {
-        if (isset($_POST['temoakte_project_url'])) {
-            update_post_meta($post_id, '_temoakte_project_url', sanitize_url($_POST['temoakte_project_url']));
-        }
-        if (isset($_POST['temoakte_client_name'])) {
-            update_post_meta($post_id, '_temoakte_client_name', sanitize_text_field($_POST['temoakte_client_name']));
-        }
-        if (isset($_POST['temoakte_project_date'])) {
-            update_post_meta($post_id, '_temoakte_project_date', sanitize_text_field($_POST['temoakte_project_date']));
-        }
-        if (isset($_POST['temoakte_technologies'])) {
-            update_post_meta($post_id, '_temoakte_technologies', sanitize_textarea_field($_POST['temoakte_technologies']));
-        }
-    }
-    
-    // Services Meta
-    if (isset($_POST['temoakte_services_meta_nonce_field']) && wp_verify_nonce($_POST['temoakte_services_meta_nonce_field'], 'temoakte_services_meta_nonce')) {
-        if (isset($_POST['temoakte_service_price'])) {
-            update_post_meta($post_id, '_temoakte_service_price', sanitize_text_field($_POST['temoakte_service_price']));
-        }
-        if (isset($_POST['temoakte_service_duration'])) {
-            update_post_meta($post_id, '_temoakte_service_duration', sanitize_text_field($_POST['temoakte_service_duration']));
-        }
-        if (isset($_POST['temoakte_service_features'])) {
-            update_post_meta($post_id, '_temoakte_service_features', sanitize_textarea_field($_POST['temoakte_service_features']));
-        }
-    }
-    
-    // Testimonials Meta
-    if (isset($_POST['temoakte_testimonials_meta_nonce_field']) && wp_verify_nonce($_POST['temoakte_testimonials_meta_nonce_field'], 'temoakte_testimonials_meta_nonce')) {
-        if (isset($_POST['temoakte_client_name'])) {
-            update_post_meta($post_id, '_temoakte_client_name', sanitize_text_field($_POST['temoakte_client_name']));
-        }
-        if (isset($_POST['temoakte_client_position'])) {
-            update_post_meta($post_id, '_temoakte_client_position', sanitize_text_field($_POST['temoakte_client_position']));
-        }
-        if (isset($_POST['temoakte_client_company'])) {
-            update_post_meta($post_id, '_temoakte_client_company', sanitize_text_field($_POST['temoakte_client_company']));
-        }
-        if (isset($_POST['temoakte_rating'])) {
-            update_post_meta($post_id, '_temoakte_rating', intval($_POST['temoakte_rating']));
-        }
-    }
-}
-add_action('save_post', 'temoakte_save_meta_boxes');
-
-/**
- * Register Temoakte Shortcodes
- */
-function temoakte_register_shortcodes() {
-    add_shortcode('temoakte_portfolio', 'temoakte_portfolio_shortcode');
-    add_shortcode('temoakte_services', 'temoakte_services_shortcode');
-    add_shortcode('temoakte_testimonials', 'temoakte_testimonials_shortcode');
-    add_shortcode('temoakte_contact_form', 'temoakte_contact_form_shortcode');
-}
-add_action('init', 'temoakte_register_shortcodes');
-
-/**
- * Portfolio Shortcode
- */
-function temoakte_portfolio_shortcode($atts) {
+function temoakte_hero_shortcode($atts) {
     $atts = shortcode_atts(array(
-        'limit' => 6,
-        'category' => '',
-        'columns' => 3
+        'title' => 'Welcome to Temoakte',
+        'subtitle' => 'Beautiful, Fast WordPress Theme',
+        'button_text' => 'Get Started',
+        'button_url' => '#'
     ), $atts);
-    
-    $args = array(
-        'post_type' => 'temoakte_portfolio',
-        'posts_per_page' => intval($atts['limit']),
-        'post_status' => 'publish'
-    );
-    
-    if (!empty($atts['category'])) {
-        $args['tax_query'] = array(
-            array(
-                'taxonomy' => 'portfolio_category',
-                'field' => 'slug',
-                'terms' => $atts['category']
-            )
-        );
-    }
-    
-    $portfolio_query = new WP_Query($args);
-    
-    if (!$portfolio_query->have_posts()) {
-        return '<p>' . __('No portfolio items found.', 'temoakte') . '</p>';
-    }
-    
-    $output = '<div class="temoakte-portfolio-grid temoakte-grid temoakte-grid-' . intval($atts['columns']) . '">';
-    
-    while ($portfolio_query->have_posts()) {
-        $portfolio_query->the_post();
-        $project_url = get_post_meta(get_the_ID(), '_temoakte_project_url', true);
-        $client_name = get_post_meta(get_the_ID(), '_temoakte_client_name', true);
-        
-        $output .= '<div class="temoakte-portfolio-item temoakte-card">';
-        if (has_post_thumbnail()) {
-            $output .= '<div class="temoakte-portfolio-image">';
-            $output .= get_the_post_thumbnail(get_the_ID(), 'medium', array('class' => 'temoakte-post-image'));
-            $output .= '</div>';
-        }
-        $output .= '<div class="temoakte-portfolio-content">';
-        $output .= '<h3 class="temoakte-portfolio-title">' . get_the_title() . '</h3>';
-        $output .= '<div class="temoakte-portfolio-excerpt">' . get_the_excerpt() . '</div>';
-        if ($client_name) {
-            $output .= '<p class="temoakte-portfolio-client"><strong>' . __('Client:', 'temoakte') . '</strong> ' . esc_html($client_name) . '</p>';
-        }
-        if ($project_url) {
-            $output .= '<a href="' . esc_url($project_url) . '" class="temoakte-btn temoakte-btn-primary" target="_blank">' . __('View Project', 'temoakte') . '</a>';
-        }
-        $output .= '</div></div>';
-    }
-    
-    $output .= '</div>';
-    
-    wp_reset_postdata();
-    return $output;
+
+    ob_start();
+    ?>
+    <section class="bg-gradient-to-br from-primary-600 to-primary-800 text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl font-bold mb-6">
+                <?php echo esc_html($atts['title']); ?>
+            </h1>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">
+                <?php echo esc_html($atts['subtitle']); ?>
+            </p>
+            <a href="<?php echo esc_url($atts['button_url']); ?>" 
+               class="inline-flex items-center px-8 py-4 bg-white text-primary-600 font-semibold rounded-lg hover:bg-gray-100 transition-colors">
+                <?php echo esc_html($atts['button_text']); ?>
+            </a>
+        </div>
+    </section>
+    <?php
+    return ob_get_clean();
 }
+add_shortcode('temoakte_hero', 'temoakte_hero_shortcode');
 
 /**
- * Services Shortcode
+ * Features grid shortcode
  */
-function temoakte_services_shortcode($atts) {
+function temoakte_features_shortcode($atts) {
     $atts = shortcode_atts(array(
-        'limit' => 6,
-        'category' => '',
-        'columns' => 3
+        'title' => 'Our Features'
     ), $atts);
-    
-    $args = array(
-        'post_type' => 'temoakte_services',
-        'posts_per_page' => intval($atts['limit']),
-        'post_status' => 'publish'
-    );
-    
-    if (!empty($atts['category'])) {
-        $args['tax_query'] = array(
-            array(
-                'taxonomy' => 'service_category',
-                'field' => 'slug',
-                'terms' => $atts['category']
-            )
-        );
-    }
-    
-    $services_query = new WP_Query($args);
-    
-    if (!$services_query->have_posts()) {
-        return '<p>' . __('No services found.', 'temoakte') . '</p>';
-    }
-    
-    $output = '<div class="temoakte-services-grid temoakte-grid temoakte-grid-' . intval($atts['columns']) . '">';
-    
-    while ($services_query->have_posts()) {
-        $services_query->the_post();
-        $service_price = get_post_meta(get_the_ID(), '_temoakte_service_price', true);
-        $service_duration = get_post_meta(get_the_ID(), '_temoakte_service_duration', true);
-        
-        $output .= '<div class="temoakte-service-item temoakte-card">';
-        if (has_post_thumbnail()) {
-            $output .= '<div class="temoakte-service-image">';
-            $output .= get_the_post_thumbnail(get_the_ID(), 'medium', array('class' => 'temoakte-post-image'));
-            $output .= '</div>';
-        }
-        $output .= '<div class="temoakte-service-content">';
-        $output .= '<h3 class="temoakte-service-title">' . get_the_title() . '</h3>';
-        $output .= '<div class="temoakte-service-excerpt">' . get_the_excerpt() . '</div>';
-        if ($service_price) {
-            $output .= '<p class="temoakte-service-price"><strong>' . __('Price:', 'temoakte') . '</strong> ' . esc_html($service_price) . '</p>';
-        }
-        if ($service_duration) {
-            $output .= '<p class="temoakte-service-duration"><strong>' . __('Duration:', 'temoakte') . '</strong> ' . esc_html($service_duration) . '</p>';
-        }
-        $output .= '<a href="' . get_permalink() . '" class="temoakte-btn temoakte-btn-primary">' . __('Learn More', 'temoakte') . '</a>';
-        $output .= '</div></div>';
-    }
-    
-    $output .= '</div>';
-    
-    wp_reset_postdata();
-    return $output;
+
+    ob_start();
+    ?>
+    <section class="py-16 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">
+                <?php echo esc_html($atts['title']); ?>
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-900 dark:text-white">Lightning Fast</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Optimized for speed with local assets and smart caching.</p>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-900 dark:text-white">Mobile First</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Responsive design that looks great on all devices.</p>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center mb-4">
+                        <svg class="w-6 h-6 text-primary-600 dark:text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-gray-900 dark:text-white">Easy to Use</h3>
+                    <p class="text-gray-600 dark:text-gray-300">Simple shortcodes and customizable components.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <?php
+    return ob_get_clean();
 }
+add_shortcode('temoakte_features', 'temoakte_features_shortcode');
 
 /**
- * Testimonials Shortcode
+ * Contact form shortcode
  */
-function temoakte_testimonials_shortcode($atts) {
+function temoakte_contact_shortcode($atts) {
     $atts = shortcode_atts(array(
-        'limit' => 3,
-        'columns' => 3
+        'title' => 'Contact Us'
     ), $atts);
-    
-    $args = array(
-        'post_type' => 'temoakte_testimonials',
-        'posts_per_page' => intval($atts['limit']),
-        'post_status' => 'publish'
-    );
-    
-    $testimonials_query = new WP_Query($args);
-    
-    if (!$testimonials_query->have_posts()) {
-        return '<p>' . __('No testimonials found.', 'temoakte') . '</p>';
-    }
-    
-    $output = '<div class="temoakte-testimonials-grid temoakte-grid temoakte-grid-' . intval($atts['columns']) . '">';
-    
-    while ($testimonials_query->have_posts()) {
-        $testimonials_query->the_post();
-        $client_name = get_post_meta(get_the_ID(), '_temoakte_client_name', true);
-        $client_position = get_post_meta(get_the_ID(), '_temoakte_client_position', true);
-        $client_company = get_post_meta(get_the_ID(), '_temoakte_client_company', true);
-        $rating = get_post_meta(get_the_ID(), '_temoakte_rating', true);
-        
-        $output .= '<div class="temoakte-testimonial-item temoakte-card">';
-        $output .= '<div class="temoakte-testimonial-content">';
-        $output .= '<div class="temoakte-testimonial-text">' . get_the_content() . '</div>';
-        if ($rating) {
-            $output .= '<div class="temoakte-testimonial-rating">';
-            for ($i = 1; $i <= 5; $i++) {
-                $output .= '<span class="star' . ($i <= $rating ? ' filled' : '') . '">★</span>';
-            }
-            $output .= '</div>';
-        }
-        $output .= '<div class="temoakte-testimonial-author">';
-        if ($client_name) {
-            $output .= '<h4>' . esc_html($client_name) . '</h4>';
-        }
-        if ($client_position || $client_company) {
-            $output .= '<p>';
-            if ($client_position) {
-                $output .= esc_html($client_position);
-            }
-            if ($client_position && $client_company) {
-                $output .= ' at ';
-            }
-            if ($client_company) {
-                $output .= esc_html($client_company);
-            }
-            $output .= '</p>';
-        }
-        $output .= '</div></div></div>';
-    }
-    
-    $output .= '</div>';
-    
-    wp_reset_postdata();
-    return $output;
+
+    ob_start();
+    ?>
+    <section class="py-16">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">
+                <?php echo esc_html($atts['title']); ?>
+            </h2>
+            
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg">
+                <form id="temoakte-contact-form" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Name</label>
+                            <input type="text" id="name" name="name" required 
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white">
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                            <input type="email" id="email" name="email" required 
+                                   class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="subject" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Subject</label>
+                        <input type="text" id="subject" name="subject" 
+                               class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white">
+                    </div>
+                    
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Message</label>
+                        <textarea id="message" name="message" rows="5" required 
+                                  class="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"></textarea>
+                    </div>
+                    
+                    <button type="submit" 
+                            class="w-full bg-primary-600 hover:bg-primary-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
+                        Send Message
+                    </button>
+                </form>
+                
+                <div id="contact-response" class="mt-4 hidden"></div>
+            </div>
+        </div>
+    </section>
+    <?php
+    return ob_get_clean();
 }
+add_shortcode('temoakte_contact', 'temoakte_contact_shortcode');
 
 /**
- * Contact Form Shortcode
- */
-function temoakte_contact_form_shortcode($atts) {
-    $atts = shortcode_atts(array(
-        'title' => __('Contact Us', 'temoakte'),
-        'button_text' => __('Send Message', 'temoakte')
-    ), $atts);
-    
-    $output = '<div class="temoakte-contact-form">';
-    $output .= '<h3>' . esc_html($atts['title']) . '</h3>';
-    $output .= '<form id="temoakte-contact-form" class="temoakte-form">';
-    $output .= wp_nonce_field('temoakte_contact_nonce', 'temoakte_contact_nonce_field', true, false);
-    $output .= '<div class="temoakte-form-row">';
-    $output .= '<div class="temoakte-form-group">';
-    $output .= '<label for="temoakte_name">' . __('Name', 'temoakte') . ' *</label>';
-    $output .= '<input type="text" id="temoakte_name" name="temoakte_name" required>';
-    $output .= '</div>';
-    $output .= '<div class="temoakte-form-group">';
-    $output .= '<label for="temoakte_email">' . __('Email', 'temoakte') . ' *</label>';
-    $output .= '<input type="email" id="temoakte_email" name="temoakte_email" required>';
-    $output .= '</div>';
-    $output .= '</div>';
-    $output .= '<div class="temoakte-form-group">';
-    $output .= '<label for="temoakte_subject">' . __('Subject', 'temoakte') . '</label>';
-    $output .= '<input type="text" id="temoakte_subject" name="temoakte_subject">';
-    $output .= '</div>';
-    $output .= '<div class="temoakte-form-group">';
-    $output .= '<label for="temoakte_message">' . __('Message', 'temoakte') . ' *</label>';
-    $output .= '<textarea id="temoakte_message" name="temoakte_message" rows="5" required></textarea>';
-    $output .= '</div>';
-    $output .= '<div class="temoakte-form-group">';
-    $output .= '<button type="submit" class="temoakte-btn temoakte-btn-primary">' . esc_html($atts['button_text']) . '</button>';
-    $output .= '</div>';
-    $output .= '<div id="temoakte-form-messages"></div>';
-    $output .= '</form>';
-    $output .= '</div>';
-    
-    return $output;
-}
-
-/**
- * Handle Contact Form Submission
+ * Handle contact form submission
  */
 function temoakte_handle_contact_form() {
-    if (!wp_verify_nonce($_POST['temoakte_contact_nonce_field'], 'temoakte_contact_nonce')) {
-        wp_die(__('Security check failed', 'temoakte'));
+    if (!wp_verify_nonce($_POST['nonce'], 'temoakte_nonce')) {
+        wp_die('Security check failed');
     }
+
+    $name = sanitize_text_field($_POST['name']);
+    $email = sanitize_email($_POST['email']);
+    $subject = sanitize_text_field($_POST['subject']);
+    $message = sanitize_textarea_field($_POST['message']);
+
+    if (empty($name) || empty($email) || empty($message)) {
+        wp_send_json_error('Please fill in all required fields.');
+    }
+
+    if (!is_email($email)) {
+        wp_send_json_error('Please enter a valid email address.');
+    }
+
+    $to = get_option('admin_email');
+    $email_subject = $subject ?: 'New Contact Form Submission';
+    $email_message = "Name: $name\nEmail: $email\n\nMessage:\n$message";
     
-    $name = sanitize_text_field($_POST['temoakte_name']);
-    $email = sanitize_email($_POST['temoakte_email']);
-    $subject = sanitize_text_field($_POST['temoakte_subject']);
-    $message = sanitize_textarea_field($_POST['temoakte_message']);
-    
-    $admin_email = get_option('admin_email');
-    $site_name = get_bloginfo('name');
-    
-    $email_subject = '[' . $site_name . '] ' . ($subject ? $subject : __('New Contact Form Submission', 'temoakte'));
-    $email_message = sprintf(
-        __("New contact form submission from %s:\n\nName: %s\nEmail: %s\nSubject: %s\n\nMessage:\n%s", 'temoakte'),
-        $site_name,
-        $name,
-        $email,
-        $subject,
-        $message
-    );
-    
-    $headers = array(
-        'Content-Type: text/plain; charset=UTF-8',
-        'Reply-To: ' . $name . ' <' . $email . '>'
-    );
-    
-    if (wp_mail($admin_email, $email_subject, $email_message, $headers)) {
-        wp_send_json_success(__('Message sent successfully!', 'temoakte'));
+    if (wp_mail($to, $email_subject, $email_message, array('Reply-To: ' . $email))) {
+        wp_send_json_success('Message sent successfully!');
     } else {
-        wp_send_json_error(__('Failed to send message. Please try again.', 'temoakte'));
+        wp_send_json_error('Failed to send message. Please try again.');
     }
 }
 add_action('wp_ajax_temoakte_contact_form', 'temoakte_handle_contact_form');
 add_action('wp_ajax_nopriv_temoakte_contact_form', 'temoakte_handle_contact_form');
 
 /**
- * Add Theme Support
+ * Testimonials shortcode
  */
-function temoakte_theme_support() {
-    add_theme_support('post-thumbnails');
-    add_theme_support('title-tag');
-    add_theme_support('custom-logo');
-    add_theme_support('custom-header');
-    add_theme_support('custom-background');
-    add_theme_support('html5', array('search-form', 'comment-form', 'comment-list', 'gallery', 'caption'));
+function temoakte_testimonials_shortcode($atts) {
+    ob_start();
+    ?>
+    <section class="py-16 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">
+                What Our Clients Say
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                    <div class="flex items-center mb-4">
+                        <img src="https://via.placeholder.com/60x60" alt="Client" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white">John Doe</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">CEO, Tech Corp</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300">"Amazing theme with great performance. Highly recommended!"</p>
+                    <div class="flex mt-4">
+                        <span class="text-yellow-400">★★★★★</span>
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                    <div class="flex items-center mb-4">
+                        <img src="https://via.placeholder.com/60x60" alt="Client" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Jane Smith</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Designer, Creative Agency</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300">"Beautiful design and easy to customize. Love it!"</p>
+                    <div class="flex mt-4">
+                        <span class="text-yellow-400">★★★★★</span>
+                    </div>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                    <div class="flex items-center mb-4">
+                        <img src="https://via.placeholder.com/60x60" alt="Client" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-semibold text-gray-900 dark:text-white">Mike Johnson</h4>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Developer, StartupXYZ</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 dark:text-gray-300">"Fast loading and great code quality. Perfect for our needs."</p>
+                    <div class="flex mt-4">
+                        <span class="text-yellow-400">★★★★★</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <?php
+    return ob_get_clean();
 }
-add_action('after_setup_theme', 'temoakte_theme_support');
+add_shortcode('temoakte_testimonials', 'temoakte_testimonials_shortcode');
 
 /**
- * Register Widget Areas
+ * Stats/counter shortcode
  */
-function temoakte_widgets_init() {
-    register_sidebar(array(
-        'name' => __('Temoakte Sidebar', 'temoakte'),
-        'id' => 'temoakte-sidebar',
-        'description' => __('Add widgets here to appear in your sidebar.', 'temoakte'),
-        'before_widget' => '<section id="%1$s" class="widget %2$s temoakte-widget">',
-        'after_widget' => '</section>',
-        'before_title' => '<h3 class="widget-title temoakte-widget-title">',
-        'after_title' => '</h3>',
-    ));
-    
-    register_sidebar(array(
-        'name' => __('Temoakte Footer 1', 'temoakte'),
-        'id' => 'temoakte-footer-1',
-        'description' => __('Add widgets here to appear in the first footer column.', 'temoakte'),
-        'before_widget' => '<section id="%1$s" class="widget %2$s temoakte-footer-widget">',
-        'after_widget' => '</section>',
-        'before_title' => '<h4 class="widget-title temoakte-footer-widget-title">',
-        'after_title' => '</h4>',
-    ));
-    
-    register_sidebar(array(
-        'name' => __('Temoakte Footer 2', 'temoakte'),
-        'id' => 'temoakte-footer-2',
-        'description' => __('Add widgets here to appear in the second footer column.', 'temoakte'),
-        'before_widget' => '<section id="%1$s" class="widget %2$s temoakte-footer-widget">',
-        'after_widget' => '</section>',
-        'before_title' => '<h4 class="widget-title temoakte-footer-widget-title">',
-        'after_title' => '</h4>',
-    ));
-    
-    register_sidebar(array(
-        'name' => __('Temoakte Footer 3', 'temoakte'),
-        'id' => 'temoakte-footer-3',
-        'description' => __('Add widgets here to appear in the third footer column.', 'temoakte'),
-        'before_widget' => '<section id="%1$s" class="widget %2$s temoakte-footer-widget">',
-        'after_widget' => '</section>',
-        'before_title' => '<h4 class="widget-title temoakte-footer-widget-title">',
-        'after_title' => '</h4>',
-    ));
+function temoakte_stats_shortcode($atts) {
+    ob_start();
+    ?>
+    <section class="py-16 bg-primary-600 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-4xl font-bold mb-2" data-counter="150">0</div>
+                    <div class="text-primary-200">Projects Completed</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold mb-2" data-counter="50">0</div>
+                    <div class="text-primary-200">Happy Clients</div>
+                </div>
+                <div class="text-4xl font-bold mb-2" data-counter="99">0</div>
+                    <div class="text-primary-200">Page Speed Score</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-bold mb-2" data-counter="24">0</div>
+                    <div class="text-primary-200">Hours Support</div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <?php
+    return ob_get_clean();
 }
-add_action('widgets_init', 'temoakte_widgets_init');
-
-/**
- * Customizer Settings
- */
-function temoakte_customize_register($wp_customize) {
-    
-    // Temoakte Settings Section
-    $wp_customize->add_section('temoakte_settings', array(
-        'title' => __('Temoakte Settings', 'temoakte'),
-        'priority' => 30,
-    ));
-    
-    // Primary Color
-    $wp_customize->add_setting('temoakte_primary_color', array(
-        'default' => '#3b82f6',
-        'sanitize_callback' => 'sanitize_hex_color',
-    ));
-    
-    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'temoakte_primary_color', array(
-        'label' => __('Primary Color', 'temoakte'),
-        'section' => 'temoakte_settings',
-        'settings' => 'temoakte_primary_color',
-    )));
-    
-    // Secondary Color
-    $wp_customize->add_setting('temoakte_secondary_color', array(
-        'default' => '#1e40af',
-        'sanitize_callback' => 'sanitize_hex_color',
-    ));
-    
-    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'temoakte_secondary_color', array(
-        'label' => __('Secondary Color', 'temoakte'),
-        'section' => 'temoakte_settings',
-        'settings' => 'temoakte_secondary_color',
-    )));
-    
-    // Footer Text
-    $wp_customize->add_setting('temoakte_footer_text', array(
-        'default' => __('© 2024 Temoakte. All rights reserved.', 'temoakte'),
-        'sanitize_callback' => 'sanitize_text_field',
-    ));
-    
-    $wp_customize->add_control('temoakte_footer_text', array(
-        'label' => __('Footer Text', 'temoakte'),
-        'section' => 'temoakte_settings',
-        'type' => 'text',
-    ));
-}
-add_action('customize_register', 'temoakte_customize_register');
-
-/**
- * Custom CSS Output
- */
-function temoakte_custom_css() {
-    $primary_color = get_theme_mod('temoakte_primary_color', '#3b82f6');
-    $secondary_color = get_theme_mod('temoakte_secondary_color', '#1e40af');
-    
-    echo '<style type="text/css">';
-    echo ':root {';
-    echo '--temoakte-primary: ' . esc_attr($primary_color) . ';';
-    echo '--temoakte-secondary: ' . esc_attr($secondary_color) . ';';
-    echo '}';
-    echo '</style>';
-}
-add_action('wp_head', 'temoakte_custom_css');
+add_shortcode('temoakte_stats', 'temoakte_stats_shortcode');
