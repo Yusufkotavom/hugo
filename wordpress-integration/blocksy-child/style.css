@@ -1,0 +1,362 @@
+/*
+Theme Name: Blocksy Child - Temoakte Custom with Tailwind CSS v4 & Flowbite Pro
+Description: Child theme of Blocksy with Temoakte system integration using Tailwind CSS v4 and Flowbite Pro
+Author: Temoakte
+Template: blocksy
+Version: 1.0.0
+*/
+
+/* Import parent theme styles */
+@import url("../blocksy/style.css");
+
+/* Tailwind CSS v4 - Modern Import Syntax */
+@import "tailwindcss";
+
+/* Custom Temoakte System Styles with Tailwind Integration */
+:root {
+  --temoakte-primary: #3b82f6;
+  --temoakte-secondary: #1e40af;
+  --temoakte-accent: #f59e0b;
+  --temoakte-text: #1f2937;
+  --temoakte-bg: #ffffff;
+  --temoakte-border: #e5e7eb;
+}
+
+/* Temoakte Custom Components using Tailwind CSS v4 */
+.temoakte-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: var(--radius-temoakte-button);
+  transition: all 0.2s ease;
+  outline: none;
+  
+  &:focus {
+    ring: 2px;
+    ring-offset: 2px;
+  }
+}
+
+.temoakte-btn-primary {
+  background-color: var(--color-temoakte-primary);
+  color: white;
+  
+  &:hover {
+    background-color: var(--color-temoakte-primary-700);
+  }
+  
+  &:focus {
+    ring-color: var(--color-temoakte-primary-500);
+  }
+}
+
+.temoakte-btn-secondary {
+  background-color: transparent;
+  color: var(--color-temoakte-primary);
+  border: 2px solid var(--color-temoakte-primary);
+  
+  &:hover {
+    background-color: var(--color-temoakte-primary);
+    color: white;
+  }
+  
+  &:focus {
+    ring-color: var(--color-temoakte-primary-500);
+  }
+}
+
+.temoakte-btn-large {
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+}
+
+.temoakte-card {
+  background-color: white;
+  border-radius: var(--radius-temoakte-card);
+  box-shadow: var(--shadow-temoakte-card);
+  padding: 1.5rem;
+  border: 1px solid var(--color-temoakte-border);
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: var(--shadow-temoakte-card-hover);
+    transform: translateY(-0.25rem);
+  }
+}
+
+.temoakte-content {
+  max-width: 80rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+  
+  @media (min-width: 640px) {
+    padding: 0 1.5rem;
+  }
+  
+  @media (min-width: 1024px) {
+    padding: 0 2rem;
+  }
+}
+
+.temoakte-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.temoakte-grid-2 {
+  grid-template-columns: 1fr;
+  
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.temoakte-grid-3 {
+  grid-template-columns: 1fr;
+  
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.temoakte-grid-4 {
+  grid-template-columns: 1fr;
+  
+  @media (min-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Temoakte Custom Header Integration */
+.temoakte-header {
+  background: var(--temoakte-bg);
+  border-bottom: 1px solid var(--temoakte-border);
+  padding: 1rem 0;
+}
+
+.temoakte-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.temoakte-logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--temoakte-primary);
+  text-decoration: none;
+}
+
+.temoakte-menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 2rem;
+}
+
+.temoakte-menu a {
+  color: var(--temoakte-text);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.temoakte-menu a:hover {
+  color: var(--temoakte-primary);
+}
+
+/* Temoakte Content Wrapper */
+.temoakte-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* Temoakte Custom Cards */
+.temoakte-card {
+  background: var(--temoakte-bg);
+  border: 1px solid var(--temoakte-border);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.temoakte-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.temoakte-card-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--temoakte-text);
+  margin-bottom: 0.5rem;
+}
+
+.temoakte-card-content {
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+/* Temoakte Buttons */
+.temoakte-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+  font-size: 0.875rem;
+}
+
+.temoakte-btn-primary {
+  background-color: var(--temoakte-primary);
+  color: white;
+}
+
+.temoakte-btn-primary:hover {
+  background-color: var(--temoakte-secondary);
+  color: white;
+}
+
+.temoakte-btn-secondary {
+  background-color: transparent;
+  color: var(--temoakte-primary);
+  border: 1px solid var(--temoakte-primary);
+}
+
+.temoakte-btn-secondary:hover {
+  background-color: var(--temoakte-primary);
+  color: white;
+}
+
+/* Temoakte Grid System */
+.temoakte-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.temoakte-grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.temoakte-grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+.temoakte-grid-4 {
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+/* Temoakte Footer */
+.temoakte-footer {
+  background: #1f2937;
+  color: white;
+  padding: 3rem 0 1rem;
+  margin-top: 4rem;
+}
+
+.temoakte-footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .temoakte-nav {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .temoakte-menu {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .temoakte-content {
+    padding: 1rem;
+  }
+  
+  .temoakte-grid-2,
+  .temoakte-grid-3,
+  .temoakte-grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Integration with Blocksy Theme */
+.ct-container .temoakte-content {
+  max-width: 100%;
+}
+
+/* Custom Post Types Styling */
+.temoakte-post-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.temoakte-post-item {
+  background: var(--temoakte-bg);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.temoakte-post-item:hover {
+  transform: translateY(-4px);
+}
+
+.temoakte-post-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.temoakte-post-content {
+  padding: 1.5rem;
+}
+
+.temoakte-post-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--temoakte-text);
+}
+
+.temoakte-post-excerpt {
+  color: #6b7280;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.temoakte-post-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+  color: #9ca3af;
+}

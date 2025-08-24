@@ -1,0 +1,312 @@
+/**
+ * Temoakte Theme for Tailwind CSS v4
+ * Custom design system using @theme directive
+ */
+
+@theme {
+  /* === TEMOAKTE COLOR SYSTEM === */
+  
+  /* Primary Color Palette - Blues */
+  --color-temoakte-primary-50: #eff6ff;
+  --color-temoakte-primary-100: #dbeafe;
+  --color-temoakte-primary-200: #bfdbfe;
+  --color-temoakte-primary-300: #93c5fd;
+  --color-temoakte-primary-400: #60a5fa;
+  --color-temoakte-primary-500: #3b82f6;
+  --color-temoakte-primary-600: #2563eb;
+  --color-temoakte-primary-700: #1d4ed8;
+  --color-temoakte-primary-800: #1e40af;
+  --color-temoakte-primary-900: #1e3a8a;
+  --color-temoakte-primary-950: #172554;
+  
+  /* Secondary Color Palette - Deep Blues */
+  --color-temoakte-secondary-50: #f0f9ff;
+  --color-temoakte-secondary-100: #e0f2fe;
+  --color-temoakte-secondary-200: #bae6fd;
+  --color-temoakte-secondary-300: #7dd3fc;
+  --color-temoakte-secondary-400: #38bdf8;
+  --color-temoakte-secondary-500: #0ea5e9;
+  --color-temoakte-secondary-600: #0284c7;
+  --color-temoakte-secondary-700: #0369a1;
+  --color-temoakte-secondary-800: #1e40af;
+  --color-temoakte-secondary-900: #1e3a8a;
+  --color-temoakte-secondary-950: #0c4a6e;
+  
+  /* Accent Color Palette - Oranges */
+  --color-temoakte-accent-50: #fffbeb;
+  --color-temoakte-accent-100: #fef3c7;
+  --color-temoakte-accent-200: #fde68a;
+  --color-temoakte-accent-300: #fcd34d;
+  --color-temoakte-accent-400: #fbbf24;
+  --color-temoakte-accent-500: #f59e0b;
+  --color-temoakte-accent-600: #d97706;
+  --color-temoakte-accent-700: #b45309;
+  --color-temoakte-accent-800: #92400e;
+  --color-temoakte-accent-900: #78350f;
+  --color-temoakte-accent-950: #451a03;
+  
+  /* Neutral Color Palette - Grays */
+  --color-temoakte-neutral-50: #f9fafb;
+  --color-temoakte-neutral-100: #f3f4f6;
+  --color-temoakte-neutral-200: #e5e7eb;
+  --color-temoakte-neutral-300: #d1d5db;
+  --color-temoakte-neutral-400: #9ca3af;
+  --color-temoakte-neutral-500: #6b7280;
+  --color-temoakte-neutral-600: #4b5563;
+  --color-temoakte-neutral-700: #374151;
+  --color-temoakte-neutral-800: #1f2937;
+  --color-temoakte-neutral-900: #111827;
+  --color-temoakte-neutral-950: #030712;
+  
+  /* Success Color Palette - Greens */
+  --color-temoakte-success-50: #f0fdf4;
+  --color-temoakte-success-100: #dcfce7;
+  --color-temoakte-success-200: #bbf7d0;
+  --color-temoakte-success-300: #86efac;
+  --color-temoakte-success-400: #4ade80;
+  --color-temoakte-success-500: #22c55e;
+  --color-temoakte-success-600: #16a34a;
+  --color-temoakte-success-700: #15803d;
+  --color-temoakte-success-800: #166534;
+  --color-temoakte-success-900: #14532d;
+  --color-temoakte-success-950: #052e16;
+  
+  /* Warning Color Palette - Yellows */
+  --color-temoakte-warning-50: #fefce8;
+  --color-temoakte-warning-100: #fef9c3;
+  --color-temoakte-warning-200: #fef08a;
+  --color-temoakte-warning-300: #fde047;
+  --color-temoakte-warning-400: #facc15;
+  --color-temoakte-warning-500: #eab308;
+  --color-temoakte-warning-600: #ca8a04;
+  --color-temoakte-warning-700: #a16207;
+  --color-temoakte-warning-800: #854d0e;
+  --color-temoakte-warning-900: #713f12;
+  --color-temoakte-warning-950: #422006;
+  
+  /* Danger Color Palette - Reds */
+  --color-temoakte-danger-50: #fef2f2;
+  --color-temoakte-danger-100: #fee2e2;
+  --color-temoakte-danger-200: #fecaca;
+  --color-temoakte-danger-300: #fca5a5;
+  --color-temoakte-danger-400: #f87171;
+  --color-temoakte-danger-500: #ef4444;
+  --color-temoakte-danger-600: #dc2626;
+  --color-temoakte-danger-700: #b91c1c;
+  --color-temoakte-danger-800: #991b1b;
+  --color-temoakte-danger-900: #7f1d1d;
+  --color-temoakte-danger-950: #450a0a;
+  
+  /* === SEMANTIC COLOR ALIASES === */
+  --color-temoakte-primary: var(--color-temoakte-primary-500);
+  --color-temoakte-secondary: var(--color-temoakte-secondary-800);
+  --color-temoakte-accent: var(--color-temoakte-accent-500);
+  --color-temoakte-text: var(--color-temoakte-neutral-800);
+  --color-temoakte-bg: #ffffff;
+  --color-temoakte-border: var(--color-temoakte-neutral-200);
+  --color-temoakte-muted: var(--color-temoakte-neutral-500);
+  
+  /* === TYPOGRAPHY SYSTEM === */
+  
+  /* Font Families */
+  --font-family-temoakte-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-family-temoakte-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-family-temoakte-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, "Menlo", "Monaco", "Cascadia Code", "Segoe UI Mono", "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro", "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
+  --font-family-temoakte-display: "Inter", ui-sans-serif, system-ui, sans-serif;
+  
+  /* Font Sizes */
+  --font-size-temoakte-xs: 0.75rem; /* 12px */
+  --font-size-temoakte-sm: 0.875rem; /* 14px */
+  --font-size-temoakte-base: 1rem; /* 16px */
+  --font-size-temoakte-lg: 1.125rem; /* 18px */
+  --font-size-temoakte-xl: 1.25rem; /* 20px */
+  --font-size-temoakte-2xl: 1.5rem; /* 24px */
+  --font-size-temoakte-3xl: 1.875rem; /* 30px */
+  --font-size-temoakte-4xl: 2.25rem; /* 36px */
+  --font-size-temoakte-5xl: 3rem; /* 48px */
+  --font-size-temoakte-6xl: 3.75rem; /* 60px */
+  --font-size-temoakte-7xl: 4.5rem; /* 72px */
+  --font-size-temoakte-8xl: 6rem; /* 96px */
+  --font-size-temoakte-9xl: 8rem; /* 128px */
+  
+  /* Font Weights */
+  --font-weight-temoakte-thin: 100;
+  --font-weight-temoakte-extralight: 200;
+  --font-weight-temoakte-light: 300;
+  --font-weight-temoakte-normal: 400;
+  --font-weight-temoakte-medium: 500;
+  --font-weight-temoakte-semibold: 600;
+  --font-weight-temoakte-bold: 700;
+  --font-weight-temoakte-extrabold: 800;
+  --font-weight-temoakte-black: 900;
+  
+  /* Line Heights */
+  --line-height-temoakte-none: 1;
+  --line-height-temoakte-tight: 1.25;
+  --line-height-temoakte-snug: 1.375;
+  --line-height-temoakte-normal: 1.5;
+  --line-height-temoakte-relaxed: 1.625;
+  --line-height-temoakte-loose: 2;
+  
+  /* === SPACING SYSTEM === */
+  
+  /* Base Spacing Scale */
+  --spacing-temoakte-0: 0px;
+  --spacing-temoakte-px: 1px;
+  --spacing-temoakte-0-5: 0.125rem; /* 2px */
+  --spacing-temoakte-1: 0.25rem; /* 4px */
+  --spacing-temoakte-1-5: 0.375rem; /* 6px */
+  --spacing-temoakte-2: 0.5rem; /* 8px */
+  --spacing-temoakte-2-5: 0.625rem; /* 10px */
+  --spacing-temoakte-3: 0.75rem; /* 12px */
+  --spacing-temoakte-3-5: 0.875rem; /* 14px */
+  --spacing-temoakte-4: 1rem; /* 16px */
+  --spacing-temoakte-5: 1.25rem; /* 20px */
+  --spacing-temoakte-6: 1.5rem; /* 24px */
+  --spacing-temoakte-7: 1.75rem; /* 28px */
+  --spacing-temoakte-8: 2rem; /* 32px */
+  --spacing-temoakte-9: 2.25rem; /* 36px */
+  --spacing-temoakte-10: 2.5rem; /* 40px */
+  --spacing-temoakte-11: 2.75rem; /* 44px */
+  --spacing-temoakte-12: 3rem; /* 48px */
+  --spacing-temoakte-14: 3.5rem; /* 56px */
+  --spacing-temoakte-16: 4rem; /* 64px */
+  --spacing-temoakte-20: 5rem; /* 80px */
+  --spacing-temoakte-24: 6rem; /* 96px */
+  --spacing-temoakte-28: 7rem; /* 112px */
+  --spacing-temoakte-32: 8rem; /* 128px */
+  --spacing-temoakte-36: 9rem; /* 144px */
+  --spacing-temoakte-40: 10rem; /* 160px */
+  --spacing-temoakte-44: 11rem; /* 176px */
+  --spacing-temoakte-48: 12rem; /* 192px */
+  --spacing-temoakte-52: 13rem; /* 208px */
+  --spacing-temoakte-56: 14rem; /* 224px */
+  --spacing-temoakte-60: 15rem; /* 240px */
+  --spacing-temoakte-64: 16rem; /* 256px */
+  --spacing-temoakte-72: 18rem; /* 288px */
+  --spacing-temoakte-80: 20rem; /* 320px */
+  --spacing-temoakte-96: 24rem; /* 384px */
+  
+  /* Semantic Spacing Aliases */
+  --spacing-temoakte-xs: var(--spacing-temoakte-2); /* 8px */
+  --spacing-temoakte-sm: var(--spacing-temoakte-4); /* 16px */
+  --spacing-temoakte-md: var(--spacing-temoakte-6); /* 24px */
+  --spacing-temoakte-lg: var(--spacing-temoakte-8); /* 32px */
+  --spacing-temoakte-xl: var(--spacing-temoakte-12); /* 48px */
+  --spacing-temoakte-2xl: var(--spacing-temoakte-16); /* 64px */
+  --spacing-temoakte-3xl: var(--spacing-temoakte-24); /* 96px */
+  
+  /* === BORDER RADIUS SYSTEM === */
+  --radius-temoakte-none: 0px;
+  --radius-temoakte-sm: 0.125rem; /* 2px */
+  --radius-temoakte-default: 0.25rem; /* 4px */
+  --radius-temoakte-md: 0.375rem; /* 6px */
+  --radius-temoakte-lg: 0.5rem; /* 8px */
+  --radius-temoakte-xl: 0.75rem; /* 12px */
+  --radius-temoakte-2xl: 1rem; /* 16px */
+  --radius-temoakte-3xl: 1.5rem; /* 24px */
+  --radius-temoakte-full: 9999px;
+  
+  /* Semantic Border Radius Aliases */
+  --radius-temoakte-button: var(--radius-temoakte-lg);
+  --radius-temoakte-card: var(--radius-temoakte-xl);
+  --radius-temoakte-input: var(--radius-temoakte-md);
+  --radius-temoakte-modal: var(--radius-temoakte-2xl);
+  --radius-temoakte-badge: var(--radius-temoakte-full);
+  
+  /* === SHADOW SYSTEM === */
+  
+  /* Base Shadows */
+  --shadow-temoakte-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-temoakte-default: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-temoakte-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-temoakte-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-temoakte-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-temoakte-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-temoakte-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  --shadow-temoakte-none: 0 0 #0000;
+  
+  /* Semantic Shadow Aliases */
+  --shadow-temoakte-card: var(--shadow-temoakte-md);
+  --shadow-temoakte-card-hover: var(--shadow-temoakte-xl);
+  --shadow-temoakte-button: var(--shadow-temoakte-sm);
+  --shadow-temoakte-button-hover: var(--shadow-temoakte-default);
+  --shadow-temoakte-modal: var(--shadow-temoakte-2xl);
+  --shadow-temoakte-dropdown: var(--shadow-temoakte-lg);
+  
+  /* === TRANSITION SYSTEM === */
+  
+  /* Timing Functions */
+  --ease-temoakte-linear: linear;
+  --ease-temoakte-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-temoakte-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-temoakte-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-temoakte-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-temoakte-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  
+  /* Duration */
+  --duration-temoakte-75: 75ms;
+  --duration-temoakte-100: 100ms;
+  --duration-temoakte-150: 150ms;
+  --duration-temoakte-200: 200ms;
+  --duration-temoakte-300: 300ms;
+  --duration-temoakte-500: 500ms;
+  --duration-temoakte-700: 700ms;
+  --duration-temoakte-1000: 1000ms;
+  
+  /* Semantic Duration Aliases */
+  --duration-temoakte-fast: var(--duration-temoakte-150);
+  --duration-temoakte-normal: var(--duration-temoakte-300);
+  --duration-temoakte-slow: var(--duration-temoakte-500);
+  
+  /* === BREAKPOINTS === */
+  --breakpoint-temoakte-sm: 640px;
+  --breakpoint-temoakte-md: 768px;
+  --breakpoint-temoakte-lg: 1024px;
+  --breakpoint-temoakte-xl: 1280px;
+  --breakpoint-temoakte-2xl: 1536px;
+  
+  /* Custom Breakpoints */
+  --breakpoint-temoakte-mobile: 480px;
+  --breakpoint-temoakte-tablet: 768px;
+  --breakpoint-temoakte-desktop: 1024px;
+  --breakpoint-temoakte-wide: 1280px;
+  --breakpoint-temoakte-ultra: 1536px;
+  
+  /* === Z-INDEX SYSTEM === */
+  --z-temoakte-auto: auto;
+  --z-temoakte-0: 0;
+  --z-temoakte-10: 10;
+  --z-temoakte-20: 20;
+  --z-temoakte-30: 30;
+  --z-temoakte-40: 40;
+  --z-temoakte-50: 50;
+  
+  /* Semantic Z-Index Aliases */
+  --z-temoakte-base: var(--z-temoakte-0);
+  --z-temoakte-dropdown: var(--z-temoakte-10);
+  --z-temoakte-sticky: var(--z-temoakte-20);
+  --z-temoakte-fixed: var(--z-temoakte-30);
+  --z-temoakte-modal: var(--z-temoakte-40);
+  --z-temoakte-tooltip: var(--z-temoakte-50);
+}
+
+/* === DARK MODE THEME === */
+@media (prefers-color-scheme: dark) {
+  @theme {
+    /* Dark Mode Color Overrides */
+    --color-temoakte-bg: var(--color-temoakte-neutral-900);
+    --color-temoakte-text: var(--color-temoakte-neutral-100);
+    --color-temoakte-border: var(--color-temoakte-neutral-700);
+    --color-temoakte-muted: var(--color-temoakte-neutral-400);
+  }
+}
+
+/* Dark mode class-based theme */
+.dark {
+  /* Dark Mode Color Overrides */
+  --color-temoakte-bg: var(--color-temoakte-neutral-900);
+  --color-temoakte-text: var(--color-temoakte-neutral-100);
+  --color-temoakte-border: var(--color-temoakte-neutral-700);
+  --color-temoakte-muted: var(--color-temoakte-neutral-400);
+}
